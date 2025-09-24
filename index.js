@@ -18,6 +18,27 @@ app.post('/register', async (req, res)=>{
     };
 });
 
+app.get('/userdata', async (req, res)=>{
+    try{
+       const data = await userdata.find();
+       console.log(data);
+       res.send(data);
+    }catch(err){
+        console.log(err);
+    };
+});
+
+app.delete('/deleteuser/:id', async (req, res)=>{
+    try{
+        const {id} = req.params;
+        console.log(id);
+        await userdata.findByIdAndDelete(id);
+        res.send('user info deleted!');
+    }catch(err){
+        console.log(err);
+    };
+});
+
 app.listen(port, ()=>{
     console.log(`server is running on port no ${port}`);
 });
