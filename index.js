@@ -39,6 +39,26 @@ app.delete('/deleteuser/:id', async (req, res)=>{
     };
 });
 
+app.get('/userbyid/:id', async(req, res)=>{
+    try{
+        const {id} = req.params;
+        const data = await userdata.find({_id : id});
+        res.send(data);
+    }catch(err){
+        console.log(err);
+    };
+})
+
+app.put('/updatebyid/:id', async(req, res)=>{
+    try{
+        const {id} = req.params;
+        await userdata.findByIdAndUpdate(id, req.body);
+        res.send('data updated');
+    }catch(err){
+        console.log(err);
+    };
+});
+
 app.listen(port, ()=>{
     console.log(`server is running on port no ${port}`);
 });
