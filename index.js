@@ -4,6 +4,7 @@ const port = 4500;
 require('./database/connection');
 const cors = require('cors');
 const userdata = require('./schema/UserSchema');
+const productdata = require('./schema/productSchema');
 
 app.use(cors()); //middleware pipeline req / res pass
 app.use(express.json());
@@ -15,6 +16,7 @@ app.post('/register', async (req, res) => {
         res.send('registration successful');
     } catch (err) {
         console.log(err);
+        res.send(err.message);
     };
 });
 
@@ -76,7 +78,27 @@ app.post('/login', async (req, res) => {
     } catch (e) {
         console.log(e);
     };
-})
+});
+
+app.get('/products', async(req, res)=>{
+    try{
+        const response = await productdata.find();
+        res.send(response);
+    }catch(e){
+        console.log(e);
+    };
+});
+
+app.get('/searchproduct/:name', async (req,res)=>{
+    try{
+        const {name} = req.params;
+        console.log(name);
+        const result = await productdata.find({name:name});
+        res.send(result);
+    }catch(err){
+        console.log(err);
+    };
+});
 
 app.listen(port, () => {
     console.log(`server is running on port no ${port}`);
